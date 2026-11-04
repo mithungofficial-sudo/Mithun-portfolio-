@@ -144,16 +144,12 @@ ul{list-style:none}
 .camera{aspect-ratio:16/9;width:100%;object-fit:cover;background:#333}
 .foot{padding-block:18px;border-top:1px solid rgba(243,245,238,.2);font-size:14px;color:var(--paper-dim)}
 
-/* player */
-dialog.player{width:min(1100px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:0;background:#000;color:#fff;overflow:auto}
-dialog.player.vertical{width:min(420px,calc(100vw - 24px),calc((100dvh - 96px)*.5625))}
-dialog.player::backdrop{background:rgba(15,19,12,.88)}
-.player-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 8px 8px 14px;font-size:14px}
-.player-bar a{text-underline-offset:3px;white-space:nowrap}
-.player-bar button{min-height:40px;padding:0 14px;font:600 14px var(--body);background:var(--marigold);color:var(--ink);border:0;border-radius:4px;cursor:pointer}
-.player-box{aspect-ratio:16/9;background:#000}
-.player.vertical .player-box{aspect-ratio:9/16}
-.player-box iframe{width:100%;height:100%;border:0;display:block}
+/* in-place player */
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000}
+.tile.playing .frame{outline:3px solid var(--marigold);outline-offset:0}
+.reels .tile.playing{grid-column:span 2;grid-row:span 2}
+.yt-link{display:none;margin-top:4px;font-size:14px;color:var(--paper-dim);text-underline-offset:3px}
+.tile.playing .yt-link{display:inline-block}
 
 @media (max-width:1000px){
   .about-grid{grid-template-columns:1fr 1fr}
@@ -175,7 +171,6 @@ dialog.player::backdrop{background:rgba(15,19,12,.88)}
   .about-grid{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
   .btn{flex:1 1 auto;justify-content:center}
-  .player-bar span{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -298,15 +293,6 @@ dialog.player::backdrop{background:rgba(15,19,12,.88)}
 </section>
 </main>
 
-<dialog class="player" id="player" aria-label="Video player">
-  <div class="player-bar">
-    <span id="player-title"></span>
-    <a id="player-link" href="#" target="_blank" rel="noopener">Open on YouTube</a>
-    <button type="button" id="player-close">Close</button>
-  </div>
-  <div class="player-box" id="player-box"></div>
-</dialog>
-
 <script>
 (function(){
   /* The videos. To add one, add its YouTube ID. Set "name" to replace the title. */
@@ -324,15 +310,15 @@ dialog.player::backdrop{background:rgba(15,19,12,.88)}
   ];
   var PLAY = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#1B2119"/></svg>';
 
+  var playing = null;
   function tile(v, label, vertical){
     var url = vertical ? 'https://www.youtube.com/shorts/' + v.id : 'https://youtu.be/' + v.id;
-    var a = document.createElement('a');
-    a.className = 'tile';
+    var t = document.createElement('div');
+    t.className = 'tile';
+    t.innerHTML = '<a class="frame" target="_blank" rel="noopener"><span class="fallback"></span><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg"><span class="play">' + PLAY + '</span></a><span class="tile-name"></span><a class="yt-link" target="_blank" rel="noopener">Open on YouTube</a>';
+    var a = t.querySelector('a.frame'), name = t.querySelector('.tile-name');
     a.href = url;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    a.innerHTML = '<span class="frame"><span class="fallback"></span><img loading="lazy" alt="" src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg"><span class="play">' + PLAY + '</span></span><span class="tile-name"></span>';
-    var name = a.querySelector('.tile-name');
+    t.querySelector('.yt-link').href = url;
     name.textContent = v.name || label;
     a.querySelector('.fallback').textContent = label;
     a.setAttribute('aria-label', 'Play ' + (v.name || label));
@@ -342,7 +328,7 @@ dialog.player::backdrop{background:rgba(15,19,12,.88)}
     a.addEventListener('click', function(e){
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
       e.preventDefault();
-      openPlayer(v.id, name.textContent, url, vertical);
+      play(t, a, v.id, name.textContent);
     });
     /* Use the real YouTube title when a name is not set. The label stays if this fails. */
     if (!v.name && window.fetch) {
@@ -351,31 +337,29 @@ dialog.player::backdrop{background:rgba(15,19,12,.88)}
         .then(function(d){ if (d && d.title) { name.textContent = d.title; a.setAttribute('aria-label', 'Play ' + d.title); } })
         .catch(function(){});
     }
-    return a;
+    return t;
   }
   var films = document.getElementById('films'), reels = document.getElementById('reels');
   FILMS.forEach(function(v,i){ films.appendChild(tile(v, 'Film ' + (i+1), false)); });
   REELS.forEach(function(v,i){ reels.appendChild(tile(v, 'Reel ' + (i+1), true)); });
 
-  /* Player */
-  var player = document.getElementById('player'), box = document.getElementById('player-box');
-  function openPlayer(id, title, url, vertical){
-    player.classList.toggle('vertical', vertical);
-    document.getElementById('player-title').textContent = title;
-    document.getElementById('player-link').href = url;
+  /* The video plays inside its own tile. Starting another one stops the last. */
+  function play(t, a, id, title){
+    if (playing) playing();
+    var box = document.createElement('div');
+    box.className = 'frame';
     var f = document.createElement('iframe');
-    f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1';
+    f.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1';
     f.title = title;
     f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
     f.allowFullscreen = true;
     f.referrerPolicy = 'strict-origin-when-cross-origin';
-    box.innerHTML = '';
     box.appendChild(f);
-    if (player.showModal) player.showModal(); else window.open(url, '_blank');
+    a.replaceWith(box);
+    t.classList.add('playing');
+    playing = function(){ box.replaceWith(a); t.classList.remove('playing'); playing = null; };
+    t.scrollIntoView({block:'nearest', behavior: reduce ? 'auto' : 'smooth'});
   }
-  document.getElementById('player-close').addEventListener('click', function(){ player.close(); });
-  player.addEventListener('click', function(e){ if (e.target === player) player.close(); });
-  player.addEventListener('close', function(){ box.innerHTML = ''; });
 
   /* Hero photo: the head turns toward the cursor. It never delays the page. */
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
