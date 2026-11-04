@@ -1050,6 +1050,18 @@ html body #eternity p{ margin:0 !important; max-width:44ch; }
 .fin p a{ text-underline-offset:3px; }
 
 @media (max-width:1000px){ .vt-reels{ grid-template-columns:repeat(3,minmax(0,1fr)); } }
+.more [data-rv]{ opacity:1 !important; transform:none !important; }
+@media (max-width:820px){
+  #wv{ display:none !important; }
+  /* Give every video tile its own layer so nothing behind it can paint over it */
+  .vt{ position:relative; z-index:5; }
+  .vt-fr{ -webkit-transform:translateZ(0); transform:translateZ(0); background:#141a1f; }
+  .vt-films,.vt-reels,.more,.clients{ position:relative; z-index:5; }
+  .vt-yt{ display:inline-block; padding:4px 6px 8px; min-height:30px; }
+  .vt-play{ width:56px; height:56px; }
+  .vt-reels .vt-play{ width:44px; height:44px; }
+  .vt-name{ font-size:14px; }
+}
 @media (max-width:760px){
   .vt-films{ grid-template-columns:1fr; }
   .vt-reels{ grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -1234,17 +1246,17 @@ html body #eternity p{ margin:0 !important; max-width:44ch; }
   <h2 class="display h-sec" data-rv="up">Watch my work</h2>
   <p class="body-lg work-note" data-rv="up">Tap any video to watch it here.</p>
   <div class="vt-films">
-      <div class="vt" data-rv="up" data-yt="UGXOLv58ROo">
+      <div class="vt" data-yt="UGXOLv58ROo">
         <a class="vt-fr" href="https://youtu.be/UGXOLv58ROo" target="_blank" rel="noopener" aria-label="Play Dubai Wedding Work" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/UGXOLv58ROo/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/UGXOLv58ROo/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">Dubai Wedding Work</span>
         <a class="vt-yt" href="https://youtu.be/UGXOLv58ROo" target="_blank" rel="noopener" data-cursor>Open on YouTube</a>
       </div>
-      <div class="vt" data-rv="up" data-yt="cNCvoj5z4eU">
+      <div class="vt" data-yt="cNCvoj5z4eU">
         <a class="vt-fr" href="https://youtu.be/cNCvoj5z4eU" target="_blank" rel="noopener" aria-label="Play One Blood: AI Short Film for competition" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/cNCvoj5z4eU/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/cNCvoj5z4eU/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">One Blood: AI Short Film for competition</span>
@@ -1252,49 +1264,49 @@ html body #eternity p{ margin:0 !important; max-width:44ch; }
       </div>
   </div>
   <div class="vt-reels">
-      <div class="vt" data-rv="up" data-yt="AG2OmE3i2Pc">
+      <div class="vt" data-yt="AG2OmE3i2Pc">
         <a class="vt-fr" href="https://www.youtube.com/shorts/AG2OmE3i2Pc" target="_blank" rel="noopener" aria-label="Play AI and real footage" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/AG2OmE3i2Pc/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/AG2OmE3i2Pc/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">AI and real footage</span>
         <a class="vt-yt" href="https://www.youtube.com/shorts/AG2OmE3i2Pc" target="_blank" rel="noopener" data-cursor>Open on YouTube</a>
       </div>
-      <div class="vt" data-rv="up" data-yt="osgTod4Cc5I">
+      <div class="vt" data-yt="osgTod4Cc5I">
         <a class="vt-fr" href="https://www.youtube.com/shorts/osgTod4Cc5I" target="_blank" rel="noopener" aria-label="Play Bringing visions to life, one frame at a time" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/osgTod4Cc5I/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/osgTod4Cc5I/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">Bringing visions to life, one frame at a time</span>
         <a class="vt-yt" href="https://www.youtube.com/shorts/osgTod4Cc5I" target="_blank" rel="noopener" data-cursor>Open on YouTube</a>
       </div>
-      <div class="vt" data-rv="up" data-yt="wmizBlgC8M0">
+      <div class="vt" data-yt="wmizBlgC8M0">
         <a class="vt-fr" href="https://www.youtube.com/shorts/wmizBlgC8M0" target="_blank" rel="noopener" aria-label="Play On the ground at WETEX 2026" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/wmizBlgC8M0/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/wmizBlgC8M0/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">On the ground at WETEX 2026</span>
         <a class="vt-yt" href="https://www.youtube.com/shorts/wmizBlgC8M0" target="_blank" rel="noopener" data-cursor>Open on YouTube</a>
       </div>
-      <div class="vt" data-rv="up" data-yt="ZZbOdkVcWa4">
+      <div class="vt" data-yt="ZZbOdkVcWa4">
         <a class="vt-fr" href="https://www.youtube.com/shorts/ZZbOdkVcWa4" target="_blank" rel="noopener" aria-label="Play The Beach House, Anantara The Palm" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/ZZbOdkVcWa4/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/ZZbOdkVcWa4/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">The Beach House, Anantara The Palm</span>
         <a class="vt-yt" href="https://www.youtube.com/shorts/ZZbOdkVcWa4" target="_blank" rel="noopener" data-cursor>Open on YouTube</a>
       </div>
-      <div class="vt" data-rv="up" data-yt="-MND6DxRfy0">
+      <div class="vt" data-yt="-MND6DxRfy0">
         <a class="vt-fr" href="https://www.youtube.com/shorts/-MND6DxRfy0" target="_blank" rel="noopener" aria-label="Play Bringing visions to life, one frame at a time" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/-MND6DxRfy0/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/-MND6DxRfy0/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">Bringing visions to life, one frame at a time</span>
         <a class="vt-yt" href="https://www.youtube.com/shorts/-MND6DxRfy0" target="_blank" rel="noopener" data-cursor>Open on YouTube</a>
       </div>
-      <div class="vt" data-rv="up" data-yt="7AZJu284UiM">
+      <div class="vt" data-yt="7AZJu284UiM">
         <a class="vt-fr" href="https://www.youtube.com/shorts/7AZJu284UiM" target="_blank" rel="noopener" aria-label="Play Highlights: Interfashion Weekend 2025, Dubai" data-cursor>
-          <img loading="lazy" alt="" src="https://i.ytimg.com/vi/7AZJu284UiM/hqdefault.jpg">
+          <img alt="" src="https://i.ytimg.com/vi/7AZJu284UiM/hqdefault.jpg">
           <span class="vt-play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 1.5v17L18 10z" fill="#05070a"/></svg></span>
         </a>
         <span class="vt-name">Highlights: Interfashion Weekend 2025, Dubai</span>
@@ -5201,6 +5213,8 @@ else addEventListener('DOMContentLoaded', boot);
   var root = document.getElementById('wv'), v = document.getElementById('wv-video'), vb = document.getElementById('wv-blur');
   var first = document.getElementById('pathways'), last = document.getElementById('eternity');
   if(!root || !first || !last) return;
+  /* Phones: no full-screen video behind the work, so the tiles stay clear and the page stays light. */
+  if(narrow){ root.style.display = 'none'; v.removeAttribute('src'); return; }
   v.src = narrow ? 'media/reel-sm.mp4' : 'media/reel.mp4'; v.muted = true;
   if(!narrow){ vb.src = 'media/reel-sm.mp4'; vb.muted = true; } else { vb.remove(); vb = null; }
   var playing = false, st = root.style;
